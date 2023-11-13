@@ -341,6 +341,7 @@ export class Tab3Page {
           deliveryAddress: this.deliveryAddress
         }
         this.ordersService.createOrder(data).subscribe((resp) => {
+          console.log(resp);
           this.alertController.create({
             header: this.translation.encomendaEnviada,
             subHeader: this.translation.osDadosDaEncomendaForamEnviadosPorEmail,
@@ -369,6 +370,8 @@ export class Tab3Page {
           }).then((alert) => {
             alert.present();
           });
+        }, (error) => {
+          console.log(error);
         });
       }
     }
