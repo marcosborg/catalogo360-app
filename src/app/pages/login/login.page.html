@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>login</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <div></div>
+            </ion-col>
+            <ion-col size="12" size-lg>
+                <ion-card>
+                    <img class="padding" src="../../../assets/logo.png" />
+                    <ion-card-header>
+                        <ion-card-title>Login</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-list>
+                            <ion-item>
+                                <ion-label position="floating">Email</ion-label>
+                                <ion-input [(ngModel)]="email"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">Password</ion-label>
+                                <ion-input type="password" [(ngModel)]="password"></ion-input>
+                            </ion-item>
+                            <ion-item lines="none">
+                                <ion-label position="floating">Language</ion-label>
+                                <ion-select [(ngModel)]="language" (ionChange)="changeLanguage()">
+                                    <ion-select-option>PT</ion-select-option>
+                                    <ion-select-option>EN</ion-select-option>
+                                    <ion-select-option>FR</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-list>
+                        <hr>
+                        <ion-button expand="full" size="large" (click)="doLogin()">Login</ion-button>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            <ion-col>
+                <div></div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

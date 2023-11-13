@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.agendamento }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="schedule.client">
+    <ion-item>
+        <ion-label position="floating">{{ translation.cliente }}</ion-label>
+        <ion-input value="{{ schedule.client.name }}" disabled="true"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">{{ translation.dataEHora }}</ion-label>
+        <ion-datetime *ngIf="state === 1" [(ngModel)]="date" monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" displayFormat="DD MMM YYYY HH:mm" picker-format="DDDD DD MMM YYYY HH mm" max="2100"></ion-datetime>
+        <ion-datetime *ngIf="state !== 1" disabled [(ngModel)]="date" monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" disabled displayFormat="DD MMM YYYY HH:mm" picker-format="DDDD DD MMM YYYY HH mm" max="2100"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">{{ translation.observacoes }}</ion-label>
+        <ion-textarea *ngIf="state === 1" [(ngModel)]="obs"></ion-textarea>
+        <ion-textarea *ngIf="state !== 1" disabled [(ngModel)]="obs"></ion-textarea>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">{{ translation.estadoDaVisita }}</ion-label>
+        <ion-input disabled="true" [value]="state_name"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="state !== 3">
+        <ion-label *ngIf="!order_id" position="floating"></ion-label>
+        <ion-select [(ngModel)]="order_id" *ngIf="!order_id">
+            <ion-select-option *ngFor="let order of orders" value="{{ order.id }}">#{{ order.id }} | €{{ order.total }} | {{ order.created_at }}</ion-select-option>
+        </ion-select>
+        <ion-input *ngIf="order_id" disabled value="{{ translation.encomenda }} #{{ order_id }}"></ion-input>
+    </ion-item>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar *ngIf="schedule.state">
+        <ion-button *ngIf="schedule.state.id === 1" (click)="updateSchedule(2)">{{ translation.visitaRealizada }}</ion-button>
+        <ion-button *ngIf="schedule.state.id === 1" (click)="updateSchedule(3)">{{ translation.cancelarVisita }}</ion-button>
+        <ion-button *ngIf="schedule.state.id === 1" (click)="closeModal()" slot="end">{{ translation.fechar }}</ion-button>
+        <ion-button *ngIf="schedule.state.id > 1" (click)="closeModal2()" slot="end">{{ translation.fechar }}</ion-button>
+    </ion-toolbar>
+</ion-footer>

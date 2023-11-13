@@ -1,0 +1,77 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button color="secondary"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ product.name }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="secondary" (click)="share()">
+                <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{ product.reference }}</ion-card-subtitle>
+            <ion-card-title>{{ product.name }}</ion-card-title>
+            <h3><strong>{{ product.price }}€</strong></h3>
+        </ion-card-header>
+        <ion-slides pager="true">
+            <ion-slide *ngFor="let image of images">
+                <img src="https://catalogo360.pt/storage/app/{{ image.name }}" alt="">
+            </ion-slide>
+        </ion-slides>
+        <ion-card-content>
+            <p *ngIf="product.rotating == 1">
+                <ion-button [routerLink]="['/product', product.id]">{{ translation.imagemRotativa }}</ion-button>
+            </p>
+            <p>&nbsp;</p>
+            <p>{{ product.short_description }}</p>
+            <p>&nbsp;</p>
+            <p><strong>{{ translation.descricao }}</strong><br>{{ product.description }}</p>
+        </ion-card-content>
+
+        <ion-list>
+            <ion-item *ngIf="product.catalog">
+                <ion-label>{{ translation.catalogo }}</ion-label>
+                {{ product.catalog.name }}
+            </ion-item>
+            <ion-item *ngIf=product.category>
+                <ion-label>{{ translation.categoria }}</ion-label>
+                {{ product.category.name }}
+            </ion-item>
+            <ion-item *ngIf="user.client == 0">
+                <ion-label>{{ translation.precoDeVendaRecomendadoPVR }}</ion-label>
+                {{ product.pvr }}€
+            </ion-item>
+            <ion-item *ngIf="product.video">
+                <ion-label>{{ translation.video }}</ion-label>
+                <ion-button color="danger" (click)="playVideo(product.video)">
+                    <ion-icon name="logo-youtube"></ion-icon>&nbsp;Youtube</ion-button>
+            </ion-item>
+            <ion-item lines="none" *ngIf="product.pdf">
+                <ion-label>PDF</ion-label>
+                <ion-button color="primary" (click)="getPdf(product.pdf)">
+                    <ion-icon name="document-outline"></ion-icon>&nbsp;PDF</ion-button>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="danger" routerLink="/tabs/tab3" routerDirection="root">
+            <ion-icon name="clipboard"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="light" (click)="specifications()">{{ user.company_id == 33 ? 'Comprar' : translation.encomendaNormal }}</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="user.company_id != 33">
+            <ion-button color="light" (click)="diferentSpecifications()">{{ translation.encomendaComAlteracoes }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

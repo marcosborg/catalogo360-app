@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.editarEncomenda }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-label>{{ translation.quantidade }}</ion-label>
+            <ion-input type="number" [(ngModel)]="qty"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{ translation.caracteristicas }}</ion-label>
+            <ion-textarea rows="4" [(ngModel)]="features"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label>{{ translation.observacoes }}</ion-label>
+            <ion-textarea rows="4" [(ngModel)]="obs"></ion-textarea>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button slot="end" (click)="modalDismiss()">{{ translation.cancelar }}</ion-button>
+        <ion-button slot="start" (click)="modalSave()">{{ translation.gravar }}</ion-button>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.marcacaoDeVisita }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item *ngIf="!client_id">
+        <ion-searchbar [(ngModel)]="search" (ionClear)="clear()" (ionCancel)="cancel()" placeholder="{{ translation.pesquisapornomedecliente }}" (ionChange)="searchClientByName()"></ion-searchbar>
+    </ion-item>
+    <ion-item *ngFor="let client of clients" (click)="selectClient(client.id, client.name)">
+        {{ client.name }}
+    </ion-item>
+    <ion-item *ngIf="client_name">
+        {{ client_name }}
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">{{ translation.dataEHora }}</ion-label>
+        <ion-datetime [(ngModel)]="date" monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" placeholder="Selecione a data e hora" displayFormat="DD MMM YYYY HH:mm" picker-format="DDDD MMM YYYY HH mm" max="2100"></ion-datetime>
+    </ion-item>
+    <ion-item>
+        <ion-label position="floating">{{ translation.observacoes }}</ion-label>
+        <ion-textarea [(ngModel)]="obs"></ion-textarea>
+    </ion-item>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button (click)="createSchedule()">{{ translation.gravar }}</ion-button>
+        <ion-button slot="end" (click)="closeModal()">{{ translation.cancelar }}</ion-button>
+    </ion-toolbar>
+</ion-footer>

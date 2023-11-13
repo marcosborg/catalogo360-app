@@ -1,0 +1,51 @@
+<ion-header *ngIf="user.company">
+    <ion-toolbar>
+        <ion-title>
+            {{ translation.clientes }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="user.company">
+    <ion-card *ngIf="user.company.salesmansSeeClients == 1">
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.clientesDaEmpresa }}</ion-card-subtitle>
+            <ion-card-title>{{ translation.clientes }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-searchbar [(ngModel)]="search" (ionClear)="clear()" (ionCancel)="cancel()" placeholder="{{ translation.pesquisaPorNomeDeCliente }}." (ionChange)="searchClientByName()"></ion-searchbar>
+        </ion-card-content>
+        <ion-list>
+            <ion-item-sliding *ngFor="let client of clients">
+                <ion-item>
+                    <ion-label>
+                        <strong>{{ translation.nome }}: </strong>{{ client.name }}<br><strong>{{ translation.nif }}: </strong>{{ client.nif }}<br><strong>Email: </strong>{{ client.email }}<br><strong>{{ translation.telefone }}: </strong>{{ client.phone
+                        }}
+                        <p>{{ client.address }}<br>{{ client.local }}<br>{{ client.zip }}<br>{{ client.country.name }}</p>
+                    </ion-label>
+                    <div slot="end">
+                        <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+                    </div>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option (click)="edit(client.id)">
+                        <ion-icon name="create-outline"></ion-icon>{{ translation.editar }}</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+    </ion-card>
+    <ion-card *ngIf="user.company.salesmansSeeClients == 0">
+        <ion-card-content>
+            {{ translation.seNaoEncontrar }}
+        </ion-card-content>
+    </ion-card>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="danger" (click)="createClient()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Trazendo mais clientes...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,54 @@
+<ion-header *ngIf="user.company">
+    <ion-toolbar>
+        <ion-title>
+            {{ user.company.name }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="user.company">
+    <img src="https://catalogo360.pt/storage/app/{{ user.company.image }}" alt="" class="header">
+    <img src="https://catalogo360.pt/storage/app/{{ user.company.logo }}" alt="" class="logo">
+
+    <ion-card *ngIf="user.company">
+        <ion-card-header>
+            <ion-card-subtitle>{{ user.company.name }}</ion-card-subtitle>
+            <ion-card-title>{{ translation.aboutUs }}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <p>{{ user.company.about }}</p>
+        </ion-card-content>
+    </ion-card>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.contacts }}</ion-card-subtitle>
+            <ion-card-title>{{ translation.dadosDaNossaEmpresa }}</ion-card-title>
+        </ion-card-header>
+        <ion-list>
+            <ion-item>
+                <ion-label>{{ translation.nif }}</ion-label>
+                {{ user.company.nif }}
+            </ion-item>
+            <ion-item>
+                <ion-label>{{ translation.address }}</ion-label>
+                {{ user.company.address }} {{ user.company.zip }} {{ user.company.location }} {{ user.company.country.name }}
+            </ion-item>
+            <ion-item>
+                <ion-label>{{ translation.contact }}</ion-label>
+                {{ user.company.contact }}
+            </ion-item>
+            <ion-item>
+                <ion-label>Email</ion-label>
+                {{ user.company.email }}
+            </ion-item>
+            <ion-item lines="none" *ngIf="user.company.video">
+                <ion-label>Video</ion-label>
+                <ion-button color="danger" (click)="playVideo()">
+                    <ion-icon name="logo-youtube"></ion-icon>&nbsp;Youtube
+                </ion-button>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+
+</ion-content>

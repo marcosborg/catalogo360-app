@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            {{ translation.catalogos }}
+        </ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-searchbar color="light" placeholder="{{ translation.procurarPorReferencia }}"
+            (ionChange)="searchByReference()" [(ngModel)]="search"></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-searchbar color="light" placeholder="{{ translation.procurarPorCatalogo }}"
+            (ionChange)="searchByCatalog()" [(ngModel)]="search2"></ion-searchbar>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="products">
+        <ion-item *ngFor="let product of products" (click)="goProduct(product.id)">
+            <ion-label>
+                <h2>{{ product.name }}</h2>
+                <h3>{{ product.reference }}</h3>
+                <p>{{ product.description }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <ion-grid>
+        <div *ngFor="let catalog of catalogs">
+            <div *ngIf="user.company_id != 33">
+                <div *ngFor="let auth of catalog.authorization">
+                    <ion-col size-sm="12" size-md="6" size-xs="12" size-lg="6" class="catalog"
+                        routerLink="/catalog/{{ catalog.id }}" *ngIf="auth.salesman_id == user.id">
+                        <ion-card button="true">
+                            <div class="center">
+                                <img src="https://catalogo360.pt/storage/app/{{ catalog.cover }}" *ngIf="catalog.cover">
+                                <img src="https://via.placeholder.com/500x500.png?text={{ catalog.name }}"
+                                    *ngIf="!catalog.cover">
+                            </div>
+                            <ion-card-header>
+                                <ion-card-subtitle>{{ catalog.created_at }}</ion-card-subtitle>
+                                <ion-card-title>{{ catalog.name }}</ion-card-title>
+                            </ion-card-header>
+                        </ion-card>
+                    </ion-col>
+                </div>
+            </div>
+            <div *ngIf="user.company_id == 33">
+                <ion-col size-sm="12" size-md="6" size-xs="12" size-lg="6" class="catalog"
+                    routerLink="/catalog/{{ catalog.id }}">
+                    <ion-card button="true">
+                        <div class="center">
+                            <img src="https://catalogo360.pt/storage/app/{{ catalog.cover }}" *ngIf="catalog.cover">
+                            <img src="https://via.placeholder.com/500x500.png?text={{ catalog.name }}"
+                                *ngIf="!catalog.cover">
+                        </div>
+                        <ion-card-header>
+                            <ion-card-subtitle>{{ catalog.created_at }}</ion-card-subtitle>
+                            <ion-card-title>{{ catalog.name }}</ion-card-title>
+                        </ion-card-header>
+                    </ion-card>
+                </ion-col>
+            </div>
+        </div>
+    </ion-grid>
+</ion-content>

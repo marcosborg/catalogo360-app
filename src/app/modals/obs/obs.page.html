@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.informacoesAdicionais }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-label position="floating">{{ translation.observacoes }}</ion-label>
+            <ion-textarea [(ngModel)]="obs"></ion-textarea>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">{{ translation.dataDeEntrega }}</ion-label>
+            <ion-input [(ngModel)]="delivery"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">{{ translation.condicoesExtraordinariasDePagamento }}</ion-label>
+            <ion-textarea [(ngModel)]="special"></ion-textarea>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons>
+            <ion-button color="light" (click)="calcel()">{{ translation.cancelar }}</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button color="light" (click)="save()">{{ translation.gravar }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

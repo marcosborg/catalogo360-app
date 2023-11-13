@@ -1,0 +1,134 @@
+<ion-header *ngIf="user.company">
+    <ion-toolbar>
+        <ion-title>
+            {{ user.name }}
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="secondary" (click)="logout()">
+                <ion-icon name="lock-closed-sharp"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="user.company">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.dadosPessoais }}</ion-card-subtitle>
+            <ion-card-title>{{ translation.sobreMim }}</ion-card-title>
+        </ion-card-header>
+        <ion-list>
+            <ion-item>
+                <ion-label>{{ translation.nome }}</ion-label>
+                {{ user.name }}
+            </ion-item>
+            <ion-item>
+                <ion-label>Email</ion-label>
+                {{ user.email }}
+            </ion-item>
+        </ion-list>
+        <ion-item>
+            <ion-label>
+                {{ translation.observacoes }}
+                <p>&nbsp;</p>
+                <p>{{ user.obs }}</p>
+            </ion-label>
+        </ion-item>
+    </ion-card>
+
+    <div>
+        <ion-card *ngIf="user.client == 0">
+            <ion-card-content>
+                <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="choice">
+                    <ion-segment-button layout="icon-start" value="schedule">
+                        <ion-label>{{ translation.agenda }}</ion-label>
+                        <ion-icon name="calendar-outline"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button layout="icon-start" value="orders">
+                        <ion-label>{{ translation.encomendas }}</ion-label>
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button layout="icon-start" value="expenses">
+                        <ion-label>{{ translation.despesas }}</ion-label>
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-card-content>
+        </ion-card>
+
+        <ion-card *ngIf="choice == 'schedule'">
+            <ion-card-header>
+                <ion-card-subtitle>{{ translation.agenda }}</ion-card-subtitle>
+                <ion-card-title>{{ translation.entradasDeAgenda }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+
+            </ion-card-content>
+            <ion-list>
+                <ion-item *ngFor="let schedule of schedules" (click)="readSchedule(schedule.id)">
+                    <ion-label>{{ schedule.client.name }}<br><small>{{ schedule.date }}</small></ion-label>
+                    <ion-badge *ngIf="schedule.state.id === 1" color="primary">{{ schedule.state.name }}</ion-badge>
+                    <ion-badge *ngIf="schedule.state.id === 2" color="success">{{ schedule.state.name }}</ion-badge>
+                    <ion-badge *ngIf="schedule.state.id === 3" color="danger">{{ schedule.state.name }}</ion-badge>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+
+        <ion-fab *ngIf="choice == 'schedule'" vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button color="danger" (click)="createSchedule()">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+
+        <ion-card *ngIf="choice == 'orders'">
+            <ion-card-header>
+                <ion-card-subtitle>{{ translation.notasDeEncomenda }}</ion-card-subtitle>
+                <ion-card-title>{{ translation.historico }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content *ngIf="user.company_id != 33">
+                <ion-searchbar [(ngModel)]="search" (ionClear)="clear()" (ionCancel)="cancel()" placeholder="{{ translation.pesquisaPorNomeDeCliente }}." (ionChange)="searchByClientName()"></ion-searchbar>
+            </ion-card-content>
+            <ion-list>
+                <ion-item *ngFor="let order of orders" (click)="openOrder(order.id)">
+                    <ion-label>
+                        <strong>{{ translation.encomenda }} {{ order.id }} {{ translation.em }} {{ order.created_at }}</strong> {{ order.client.name }}<br>
+                        <strong>{{ translation.valor }}: </strong>€ {{ order.total }}<br>
+                        <ion-badge *ngIf="order.state == 1" color="primary">{{ translation.aguardaPagamento }}</ion-badge>
+                        <ion-badge *ngIf="order.state == 2" color="success">{{ translation.pago }}</ion-badge>
+                        <ion-badge *ngIf="order.state == 3" color="danger">{{ translation.cancelado }}</ion-badge>
+                        <ion-badge *ngIf="order.delivered_state == 1" color="warning">{{ translation.naoEntregue }}</ion-badge>
+                        <ion-badge *ngIf="order.delivered_state == 2" color="success">{{ translation.entregue }}</ion-badge>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+
+        <ion-card *ngIf="choice == 'expenses'">
+            <ion-card-header>
+                <ion-card-subtitle>{{ translation.despesas }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-list>
+                <ion-item>
+                    <ion-label>
+                        <strong>{{ translation.valorAtribuido }}: </strong>€{{ budget }}<br>
+                        <strong>{{ translation.despesas }}: </strong>€{{ total }}<br>
+                        <strong>{{ translation.saldo }}: </strong>€{{ balance }}
+                    </ion-label>
+                </ion-item>
+                <ion-item *ngFor="let expense of expenses">
+                    <ion-label>Valor: €{{ expense.value }}<br><small>{{ expense.date }}</small><br>{{ expense.obs }}
+                    </ion-label>
+                    <ion-badge *ngIf="expense.state == 0" color="primary">{{ translation.naoVerificada }}</ion-badge>
+                    <ion-badge *ngIf="expense.state == 1" color="success">{{ translation.aprovada }}</ion-badge>
+                    <ion-badge *ngIf="expense.state == 2" color="danger">{{ translation.rejeitada }}</ion-badge>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+
+        <ion-fab *ngIf="choice == 'expenses'" vertical="bottom" horizontal="end" slot="fixed">
+            <ion-fab-button color="danger" (click)="createExpense()">
+                <ion-icon name="add"></ion-icon>
+            </ion-fab-button>
+        </ion-fab>
+    </div>
+</ion-content>

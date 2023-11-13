@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.filtroDeCategorias }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let check of checked">
+            <ion-label>{{check.name}}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="check.isChecked"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-button (click)="filter()">{{ translation.filtrar }}</ion-button>
+    </ion-toolbar>
+</ion-footer>

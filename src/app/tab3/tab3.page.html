@@ -1,0 +1,112 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            CHECKOUT
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="light" (click)="emptyOrder()">
+                <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="!client && user.client == 0">
+        <ion-searchbar (ionClear)="clear()" (ionCancel)="cancel()" placeholder="{{ translation.pesquisarCliente }}" (ionChange)="searchClient()" [(ngModel)]="search"></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar color="danger">
+        <ion-title>Total: {{ total }}€<br><small>{{ translation.totalComIVA }}: {{ total_vat }} €</small></ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list *ngIf="client && user.client == 0">
+        <ion-item>
+            <ion-label>{{ client.name }}</ion-label>
+            {{ client.nif }}&nbsp;
+            <ion-button (click)="resetClient()" color="danger">
+                <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+        </ion-item>
+    </ion-list>
+    <ion-list *ngIf="client && user.client == 1">
+        <ion-item>
+            <ion-label>{{ user.company.name }}</ion-label>
+            {{ user.company.nif }}&nbsp;
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <ion-item *ngFor="let cl of clients" (click)="selectClient(cl.id)">
+            <ion-label>
+                {{ cl.name }}
+            </ion-label>
+        </ion-item>
+    </ion-list>
+    <div *ngFor="let or of order | groupBy: 'reference'  | pairs">
+        <ion-list-header>
+            <ion-label>
+                {{ or[0] }}
+            </ion-label>
+            <ion-button (click)="goProduct(or[1])">{{ translation.acrescentarNumeros }}</ion-button>
+        </ion-list-header>
+        <ion-list>
+            <ion-item-sliding *ngFor="let o of or[1]; let i = index">
+                <ion-item>
+                    <ion-thumbnail slot="start">
+                        <img src="https://catalogo360.pt/storage/app/{{ o.image }}">
+                    </ion-thumbnail>
+                    <ion-label class="ion-text-wrap">
+                        <h2>{{ o.variation_name }}</h2>
+                    </ion-label>
+                    <div slot="end">
+                        <h5>
+                            <ion-label color="primary">{{ o.qty }} X {{ o.price }}€</ion-label>
+                        </h5>
+                    </div>
+                    <div slot="end">
+                        <h4>{{ o.qty*o.price }}€ <small>+ {{ o.vat_name }}</small></h4>
+                    </div>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option (click)="edit(o.feature_id)">
+                        <ion-icon name="create-outline"></ion-icon>{{ translation.editar }}</ion-item-option>
+                    <ion-item-option color="danger" (click)="delete(o.feature_id)">
+                        <ion-icon name="trash-outline"></ion-icon>{{ translation.apagar }}</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+            <ion-button *ngIf="user.company_id != 33" size="small" fill="clear" (click)="changeVat(or[1][0]['product_id'])">{{ translation.alterarTaxaDeIVAParaProduto }}</ion-button>
+        </ion-list>
+    </div>
+    <ion-card *ngIf="client && client.different_delivery">
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.enderecosDisponiveis }}</ion-card-subtitle>
+            <ion-card-title>{{ translation.escolhaOEnderecoDeEntrega }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list>
+                <ion-radio-group [(ngModel)]="deliveryAddress">
+                    <ion-list-header>
+                        <ion-label>{{ translation.escolhaOEnderecoDeEntrega }}</ion-label>
+                    </ion-list-header>
+                    <ion-item>
+                        <ion-label>{{ client.address }} {{ client.zip }} {{ client.local }} {{ client.country.name }}</ion-label>
+                        <ion-radio slot="start" value="primary"></ion-radio>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>{{ client.delivery_address }} {{ client.delivery_zip }} {{ client.delivery_local }} {{ client.delivery_country.name }}</ion-label>
+                        <ion-radio slot="start" value="secondary"></ion-radio>
+                    </ion-item>
+                </ion-radio-group>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="start" *ngIf="user.company_id != 33">
+            <ion-button (click)="OpenObs()" color="light">{{ translation.informacoesAdicionais }}</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button *ngIf="user.company_id != 33" color="light" (click)="createOrder()">{{ translation.fecharEncomenda }}</ion-button>
+            <ion-button *ngIf="user.company_id == 33" color="light" (click)="pay()">{{ translation.pagar }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ translation.encomendaComAlteracoes }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>{{ translation.caracteristicas }}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let feature of features; let i = index">
+            <ion-label color="primary">{{ translation.alterar }}</ion-label>
+            <ion-input placeholder="{{ feature.name }}" [(ngModel)]="features[i].name"></ion-input>
+            <div *ngFor="let value of feature.values; let i = index">
+                <div *ngIf="value.product_id == id">
+                    <ion-input placeholder="{{ value.name }}" [(ngModel)]="feature.values[i].name"></ion-input>
+                </div>
+            </div>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>{{ variation_name }}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let variation of variations">
+            <ion-label>
+                {{ variation.name }}
+            </ion-label>
+            <ion-badge color="primary" *ngIf="variation.price"><strong>{{ translation.precoDaVariacao }}: </strong>€ {{ variation.price }}</ion-badge>
+            <ion-button color="success" (click)="addToCart(variation.id, variation_name, variation.name, variation.price)">{{ translation.encomendar }}</ion-button>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+        <ion-list-header>
+            <ion-label>{{ translation.resumo }}</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let c of cart">
+            <ion-label>{{ c.product_name }} - {{ c.variation_name }} {{ c.feature_name }} {{ c.features }}</ion-label>
+            <ion-badge color="primary">{{ c.qty }}</ion-badge>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button color="light" (click)="dismiss()">{{ translation.cancelar }}</ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="cart.length > 0">
+            <ion-button color="light" (click)="addToOrder()">{{ translation.adicionarAEncomenda }}</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

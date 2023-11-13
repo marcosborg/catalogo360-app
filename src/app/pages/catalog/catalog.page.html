@@ -1,0 +1,46 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button color="secondary"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ catalog.name }} <small>{{ catalog.created_at }}</small></ion-title>
+        <ion-buttons slot="end">
+            <ion-button color="secondary" (click)="emailCatalog(catalog.id)">
+                <ion-icon name="mail-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="secondary" (click)="shareCatalog(catalog.id)">
+                <ion-icon name="share-social-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-row>
+        <ion-col size-sm="12" size-md="6" size-xs="12" size-lg="6" *ngFor="let product of products">
+            <ion-card button="true" (click)="goProduct(product.id)">
+                <ion-card-header>
+                    <h3>{{ product.name }}<br><small>REF: {{ product.reference }}</small><br><strong>{{ product.price }}€</strong></h3>
+                </ion-card-header>
+                <ion-card-content>
+                    <img src="https://catalogo360.pt/storage/app/{{ product.cover }}" *ngIf="product.cover">
+                    <img src="https://via.placeholder.com/500x500.png?text={{ product.name }}" *ngIf="!product.cover">
+                    <p *ngIf="product.short_description">{{ product.short_description.slice(0, 100) }} ...</p>
+                </ion-card-content>
+            </ion-card>
+        </ion-col>
+    </ion-row>
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button color="success" (click)="openFilter()">
+            <ion-icon name="funnel-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="danger" routerLink="/tabs/tab3" routerDirection="root">
+            <ion-icon name="clipboard"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

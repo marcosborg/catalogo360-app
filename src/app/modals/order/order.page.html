@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            <div *ngIf="order">{{ translation.encomenda }} #{{ order.id }} {{ translation.criadaEm }} {{ order.created_at }}</div>
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="order">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.nif }}: {{ order.client.nif }}</ion-card-subtitle>
+            <ion-card-title>{{ order.client.name }}</ion-card-title>
+        </ion-card-header>
+
+        <ion-list>
+            <ion-item *ngFor="let item of cart" lines="full">
+                <ion-thumbnail slot="start">
+                    <img src="https://catalogo360.pt/storage/app/{{ item.image }}" alt="">
+                </ion-thumbnail>
+                <ion-label class="ion-text-wrap">{{ item.reference }}<br><small>{{ item.obs }}</small><br>
+                    <ion-note>{{ item.variation_name }}</ion-note>
+                </ion-label>
+                <div slot="end" style="text-align: right;">€ {{ item.price }} X {{ item.qty }} (€ {{ item.price * item.qty }})<br><small>€ {{ (((item.vat / 100) + 1) * item.price * item.qty) | number : '2.2' }} {{ translation.comIva }}</small></div>
+            </ion-item>
+
+        </ion-list>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>€ {{ order.total | number : '2.2' }} <small>{{ translation.semIva }}</small></ion-card-title>
+            <p>€ {{ total | number : '2.2' }} <small>{{ translation.comIva }}</small></p>
+        </ion-card-header>
+        <ion-card-content>
+            <strong>{{ translation.observacoes }}: </strong> {{ order.obs }}<br>
+            <strong>{{ translation.entrega }}: </strong> {{ order.delivery }}<br>
+            <strong>{{ translation.condicoesEspeciaisDeVenda }}: </strong> {{ order.special }}
+        </ion-card-content>
+
+    </ion-card>
+
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-button (click)="closeModal()" slot="end">{{ translation.fechar }}</ion-button>
+    </ion-toolbar>
+</ion-footer>

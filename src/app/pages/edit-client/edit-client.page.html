@@ -1,0 +1,88 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button color="light"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ translation.editarCliente }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{ translation.preenchaOsDadosDoClienteAbaixo }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.nomeDaEmpresa }}</ion-label>
+                    <ion-input [(ngModel)]="client.name"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.niF }}</ion-label>
+                    <ion-input [(ngModel)]="client.nif"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.endereco }}</ion-label>
+                    <ion-input [(ngModel)]="client.address"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.codigoPostal }}</ion-label>
+                    <ion-input [(ngModel)]="client.zip"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.localidade }}</ion-label>
+                    <ion-input [(ngModel)]="client.local"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.pais }}</ion-label>
+                    <ion-select [(ngModel)]="country" placeholder="Selecionar">
+                        <ion-select-option value="{{ country.id }}" *ngFor="let country of countries">
+                            {{ country.name }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Email</ion-label>
+                    <ion-input [(ngModel)]="client.email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.telefone }}</ion-label>
+                    <ion-input [(ngModel)]="client.phone"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{ translation.enderecoDeEntregaAlternativo }}</ion-label>
+                    <ion-toggle [(ngModel)]="client.different_delivery"></ion-toggle>
+                </ion-item>
+            </ion-list>
+            <ion-list *ngIf="client.different_delivery">
+                <ion-item>
+                    <ion-label position="floating">{{ translation.endereco }}</ion-label>
+                    <ion-input [(ngModel)]="client.delivery_address"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.codigoPostal }}</ion-label>
+                    <ion-input [(ngModel)]="client.delivery_zip"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating">{{ translation.localidade }}</ion-label>
+                    <ion-input [(ngModel)]="client.delivery_local"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label>{{ translation.pais }}</ion-label>
+                    <ion-select [(ngModel)]="client.delivery_country" placeholder="Selecionar">
+                        <ion-select-option value="{{ country.id }}" *ngFor="let country of countries">
+                            {{ country.name }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-toolbar>
+            <ion-button (click)="updateClient()">{{ translation.gravar }}</ion-button>
+        </ion-toolbar>
+    </ion-toolbar>
+</ion-footer>
