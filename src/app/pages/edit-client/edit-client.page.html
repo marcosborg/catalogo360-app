@@ -35,9 +35,9 @@
                 </ion-item>
                 <ion-item>
                     <ion-label position="floating">{{ translation.pais }}</ion-label>
-                    <ion-select [(ngModel)]="country" placeholder="Selecionar">
-                        <ion-select-option value="{{ country.id }}" *ngFor="let country of countries">
-                            {{ country.name }}
+                    <ion-select [(ngModel)]="country_id" placeholder="Selecionar">
+                        <ion-select-option value="{{ c.id }}" *ngFor="let c of countries">
+                            {{ c.name }}
                         </ion-select-option>
                     </ion-select>
                 </ion-item>

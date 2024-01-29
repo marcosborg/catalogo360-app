@@ -109,7 +109,7 @@ export class Tab5Page {
   }
 
   loadData(event) {
-    this.securityService.getClients(this.user.api_token, this.url).subscribe((resp) => {
+    this.securityService.getClients(this.user.api_token, 'https://catalogo360.pt/api/clients/getClients').subscribe((resp) => {
       this.clients = this.clients.concat(resp['data']);
       this.url = resp['next_page_url'];
       event.target.complete();

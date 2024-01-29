@@ -72,6 +72,7 @@ export class SchedulePage implements OnInit {
         obs: this.obs
       }
       this.scheduleService.createSchedule(data).subscribe((resp) => {
+        console.log(resp);
         this.alertController.create({
           header: this.translation.criadoComSucesso,
           message: this.translation.podeRegressarAAgenda,

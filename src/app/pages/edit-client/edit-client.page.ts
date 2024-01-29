@@ -36,7 +36,7 @@ export class EditClientPage implements OnInit {
   client: any = [];
   countries: any = [];
   translation: any = [];
-  country: any;
+  country_id: any;
 
   ngOnInit() {
 
@@ -82,16 +82,14 @@ export class EditClientPage implements OnInit {
   getCountries() {
     this.securityService.getCountries(this.user.api_token).subscribe((resp) => {
       this.countries = resp;
-      console.log(this.countries);
+      this.country_id = 193;
     });
   }
 
   getClient() {
     this.securityService.getClient(this.user.api_token, this.client_id).subscribe((resp) => {
       this.client = resp;
-      this.country = this.client.country.id;
-      console.log(this.country);
-      console.log(this.client);
+      this.country_id = this.client.country.id;
     });
   }
 
@@ -104,7 +102,7 @@ export class EditClientPage implements OnInit {
       this.client.address == '' ||
       this.client.zip == '' ||
       this.client.local == '' ||
-      this.client.country == this.country ||
+      this.client.country == this.country_id ||
       this.client.email == '' ||
       this.client.phone == ''
     ) {
@@ -128,7 +126,7 @@ export class EditClientPage implements OnInit {
         this.client.address,
         this.client.zip,
         this.client.local,
-        this.country,
+        this.country_id,
         this.client.email,
         this.client.phone,
         this.client.id,
