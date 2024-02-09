@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'catalogo360',
+  appId: 'pt.catalogo360.salesman',
+  appName: 'Catálogo 360',
   webDir: 'www',
   bundledWebRuntime: false
 };
