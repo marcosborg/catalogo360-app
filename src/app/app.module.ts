@@ -22,7 +22,6 @@ export class CustomHammerConfig extends HammerGestureConfig {
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, HammerModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
